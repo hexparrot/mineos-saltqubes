@@ -1,0 +1,16 @@
+#!/bin/bash
+
+MINIO_ON=`qubesdb-read /qubes-service/minio`
+if [[ $MINIO_ON -eq 1 ]]; then
+  mkdir -p /rw/volumes
+  chown minio-user:minio-user /rw/volumes
+  systemctl enable minio
+  systemctl start minio
+fi
+
+RABBITMQ_ON=`qubesdb-read /qubes-service/rabbitmq-server`
+if [[ $RABBITMQ_ON -eq 1 ]]; then
+  systemctl enable rabbitmq-server
+  systemctl start rabbitmq-server
+fi
+

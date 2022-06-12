@@ -1,0 +1,16 @@
+[Unit]
+Description=Enable and start minio & rabbitmq services
+After=qubes-mount-dirs.service
+DefaultDependencies=false
+#OnFailure=rescue.target
+#OnFailureJobMode=replace-irreversibly
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/etc/rc.d/init.d/mineos-hq
+Restart=no
+
+[Install]
+WantedBy=sysinit.target 
+
