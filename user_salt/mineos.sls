@@ -24,18 +24,13 @@ create ruby template:
     - template: fedora-35
     - label: green
 
+update standalone template:
+  cmd.run:
+    - name: qubesctl --skip-dom0 --targets=mos-template-tmp state.sls template-mineos saltenv=user
+
 clone vm to templatevm:
   cmd.run:
     - name: qvm-clone -C TemplateVM mos-template-tmp mos-template
-
-give templatevm network access:
-  qvm.prefs:
-    - name: mos-template
-    - netvm: sys-firewall
-
-remove tmp vm:
-  cmd.run:
-    - name: qvm-remove -f mos-template-tmp
 
 create hq appvm:
   qvm.present:
