@@ -1,0 +1,7 @@
+amqp:
+  host: {{ salt['pillar.get']('amqp:host') }}
+  port: {{ salt['pillar.get']('amqp:port') }}
+  vhost: {{ salt['pillar.get']('amqp:vhost') }}
+  user: {{ salt['pillar.get']('amqp:user') }}
+  pass: {{ salt['pillar.get']('amqp:pass') }}
+  

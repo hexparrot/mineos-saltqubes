@@ -1,0 +1,5 @@
+object_store:
+  host: {{ salt['pillar.get']('object-store:host') }}
+  access_key: {{ salt['pillar.get']('object-store:access_key') }}
+  secret_key: {{ salt['pillar.get']('object-store:secret_key') }}
+  

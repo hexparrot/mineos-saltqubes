@@ -28,3 +28,15 @@ mineos-repo:
     - rev: HEAD
     - force_reset: True
 
+# bring over object store creds
+/usr/local/etc/objstore.yml:
+  file.managed:
+    - source: salt://files/objstore.yml.j2
+    - template: jinja
+
+# bring over amqp (rabbitmq) creds
+/usr/local/etc/amqp.yml:
+  file.managed:
+    - source: salt://files/amqp.yml.j2
+    - template: jinja
+

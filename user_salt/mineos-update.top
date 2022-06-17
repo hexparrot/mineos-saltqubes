@@ -12,7 +12,6 @@
 ##
 
 user:
-  dom0:
-    - match: nodegroup
-    - qvm.mineos_update
+  mineos-hq:
+    - mineos-update
 
