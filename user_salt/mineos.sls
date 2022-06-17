@@ -2,16 +2,10 @@
 # vim: set syntax=yaml ts=2 sw=2 sts=2 et :
 
 ##
-# qvm.mos-hq
-# ============
-#
 # Installs 'mineos-hq' and 'mineos-worker' AppVMs, as well as the 
-# templateVM that supports them.
+# templateVM 'mos-template' that supports them.
 #
-# Pillar data will also be merged if available within the ``qvm`` pillar key:
-#   ``qvm:mos-hq``
-#
-# located in ``/srv/pillar/dom0/qvm/init.sls``
+# located in ``/srv/salt/``
 #
 # Execute:
 #   qubesctl state.sls mineos saltenv=user

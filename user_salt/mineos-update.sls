@@ -2,18 +2,10 @@
 # vim: set syntax=yaml ts=2 sw=2 sts=2 et :
 
 ##
-# qvm.mos-hq
-# ============
-#
 # Update hq and workers with most recent gems, git repos, etc.
 #
-# Pillar data will also be merged if available within the ``qvm`` pillar key:
-#   ``qvm:mos-hq``
-#
-# located in ``/srv/pillar/dom0/qvm/init.sls``
-#
 # Execute:
-#   qubesctl state.sls mineos saltenv=user
+#   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 ##
 
 # update bundler
