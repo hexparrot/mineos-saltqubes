@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: set syntax=yaml ts=2 sw=2 sts=2 et :
+
+# Installs 'sys-audio' AudioVM.
+#
+# Pillar data will also be merged if available within the ``qvm`` pillar key:
+#   ``qvm:sys-audio``
+#
+# located in ``/srv/pillar/dom0/qvm/init.sls``
+#
+# Execute:
+#   qubesctl --skip-dom0 --target=mos-template state..sls template-mineos saltenv=user
+
+user:
+  dom0:
+    - match: nodegroup
+    - qvm.mineos_update
+

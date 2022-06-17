@@ -110,15 +110,3 @@ systemctl_reload:
 hq.service:
   service.enabled
 
-# update bundler
-update bundler:
-  cmd.run:
-    - name: bundle update --bundler
-    - cwd: /usr/games/minecraft
-
-# update the rubies
-gem update:
-  cmd.run:
-    - name: bundle update
-    - cwd: /usr/games/minecraft
-
