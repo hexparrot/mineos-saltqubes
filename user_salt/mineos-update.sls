@@ -40,3 +40,10 @@ mineos-repo:
     - source: salt://files/amqp.yml.j2
     - template: jinja
 
+# enable rabbitmq webui
+enable rabbitmq_management webui:
+  cmd.run:
+    - name: rabbitmq-plugins enable rabbitmq_management
+    - onlyif:
+      - 'if [[ $(systemctl is-active rabbitmq-server) == "active" ]]; then true; else false; fi'
+
