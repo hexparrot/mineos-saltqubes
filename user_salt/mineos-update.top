@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 # vim: set syntax=yaml ts=2 sw=2 sts=2 et :
 
-# Installs 'sys-audio' AudioVM.
+# Updates MineOS ruby gems, repository, etc.
+# Third of three steps, should be run at interval
 #
-# Pillar data will also be merged if available within the ``qvm`` pillar key:
-#   ``qvm:sys-audio``
-#
-# located in ``/srv/pillar/dom0/qvm/init.sls``
+# located in ``/srv/user_salt/``
 #
 # Execute:
-#   qubesctl --skip-dom0 --target=mos-template state..sls template-mineos saltenv=user
+#   qubesctl --skip-dom0 --target=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 
 user:
   dom0:

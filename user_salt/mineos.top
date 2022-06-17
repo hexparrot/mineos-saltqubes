@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
 # vim: set syntax=yaml ts=2 sw=2 sts=2 et :
 
-# Installs 'sys-audio' AudioVM.
+# Creates mineos-hq and mineos-worker AppVMs
+# First of Three Steps
 #
-# Pillar data will also be merged if available within the ``qvm`` pillar key:
-#   ``qvm:sys-audio``
-#
-# located in ``/srv/pillar/dom0/qvm/init.sls``
+# located in ``/srv/user_salt``
 #
 # Execute:
-#   qubesctl top.enable qvm.sys-audio
-#   qubesctl --all state.highstate
+#   qubesctl state.sls mineos saltenv=user
 
 user:
   dom0:
     - match: nodegroup
     - qvm.mineos
-#  mos-template:
-#    - qvm.template-mineos
