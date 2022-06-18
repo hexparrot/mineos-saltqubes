@@ -21,6 +21,8 @@ install main packages:
       - ruby
       - ruby-devel
       - java-latest-openjdk
+      - net-tools
+      - telnet
 
 # ruby gems installed
 {% for item in ('inifile','get_process_mem','minitar','eventmachine','bunny','usagewatch','airborne','async_sinatra','thin','aws-sdk-s3','sinatra-websocket','bcrypt','httparty','rpam2','rubyzip','ox') %}
