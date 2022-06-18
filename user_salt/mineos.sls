@@ -50,5 +50,5 @@ worker tcp to hq:
   file.prepend:
     - name: /etc/qubes-rpc/policy/qubes.ConnectTCP
     - text:
-      - mineos-worker mineos-hq allow
+      - mineos-worker @default allow,target=mineos-hq
 

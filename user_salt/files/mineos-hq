@@ -16,7 +16,7 @@ if [[ $RABBITMQ_ON -eq 1 ]]; then
 else
   # if im not hosting rabbitmq, i need to connect to it:
   # direct bind tcp ports on mineos-worker*>>>mineos-hq
-  qvm-connect-tcp 5672:mineos-hq:5672   #amqp
-  qvm-connect-tcp 9000:mineos-hq:9000   #object-store
+  qvm-connect-tcp ::5672   #amqp
+  qvm-connect-tcp ::9000   #object-store
 fi
 
