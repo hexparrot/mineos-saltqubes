@@ -12,5 +12,9 @@ RABBITMQ_ON=`qubesdb-read /qubes-service/rabbitmq-server`
 if [[ $RABBITMQ_ON -eq 1 ]]; then
   systemctl enable rabbitmq-server
   systemctl start rabbitmq-server
+else
+  # if im not hosting rabbitmq, i need to connect to it:
+  # direct bind tcp ports on mineos-worker*>>>mineos-hq
+  qvm-connect-tcp 5672:mineos-hq:5672
 fi
 
