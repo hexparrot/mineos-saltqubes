@@ -40,3 +40,17 @@ mineos-repo:
     - source: salt://files/amqp.yml.j2
     - template: jinja
 
+# create primary admin
+wirt:
+  rabbitmq_user.present:
+    - password: overthegardenwall
+    - force: True
+    - tags:
+      - administrator
+    - perms:
+      - '/':
+        - ".*"
+        - ".*"
+        - ".*"
+    - runas: rabbitmq
+
