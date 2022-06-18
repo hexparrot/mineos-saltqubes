@@ -45,3 +45,10 @@ create worker vm:
     - template: mos-template
     - label: green
 
+# qubes rpc bind workers to hq
+worker tcp to hq:
+  file.prepend:
+    - name: /etc/qubes-rpc/policy/qubes.ConnectTCP
+    - text:
+      - mineos-worker mineos-hq allow
+
