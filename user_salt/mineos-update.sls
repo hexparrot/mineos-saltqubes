@@ -101,18 +101,31 @@ qubes-amqp.socket:
 
 {% endif %}
 
+# download mineos-ruby repository
+mineos-repo:
+  git.latest:
+    - name: https://github.com/hexparrot/mineos-ruby
+    - target: /usr/local/games/minecraft
+    - rev: HEAD
+    - force_reset: True
+
+# symlink to persistent area for game data
+/usr/games/minecraft:
+  file.symlink:
+    - target: /usr/local/games/minecraft
+
 ## update ruby
 # update bundler
 update bundler:
   cmd.run:
     - name: bundle update --bundler
-    - cwd: /usr/games/minecraft
+    - cwd: /usr/local/games/minecraft
 
 # update the rubies
 gem update:
   cmd.run:
     - name: bundle update
-    - cwd: /usr/games/minecraft
+    - cwd: /usr/local/games/minecraft
 
 # now for user
 {% for item in ('eventmachine','ox') %}

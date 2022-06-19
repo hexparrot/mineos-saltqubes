@@ -106,11 +106,3 @@ mc_miniobrowser:
   file.managed:
     - source: salt://files/qubes-amqp.socket
 
-# download mineos-ruby repository
-mineos-repo:
-  git.latest:
-    - name: https://github.com/hexparrot/mineos-ruby
-    - target: /usr/games/minecraft
-    - rev: HEAD
-    - force_reset: True
-
