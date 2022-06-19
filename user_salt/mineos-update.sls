@@ -10,11 +10,6 @@
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
 
-# append system services for minio
-/etc/systemd/system/minio.service:
-  file.managed:
-    - source: salt://files/minio.service
-
 # bring over object store creds
 /usr/local/etc/objstore.yml:
   file.managed:

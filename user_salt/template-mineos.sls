@@ -81,6 +81,11 @@ mc_miniobrowser:
     - owner: minio-user
     - mode: 550
 
+# append system services for minio
+/etc/systemd/system/minio.service:
+  file.managed:
+    - source: salt://files/minio.service
+
 # download mineos-ruby repository
 mineos-repo:
   git.latest:
