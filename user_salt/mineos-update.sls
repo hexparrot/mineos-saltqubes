@@ -12,13 +12,19 @@
   file.managed:
     - mode: 0755
 
-{% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
+# bring over amqp (rabbitmq) creds (all nodes)
+/usr/local/etc/amqp.yml:
+  file.managed:
+    - source: salt://files/amqp.yml.j2
+    - template: jinja
 
-# bring over object store creds
+# bring over object store creds (all nodes)
 /usr/local/etc/objstore.yml:
   file.managed:
     - source: salt://files/objstore.yml.j2
     - template: jinja
+
+{% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
 
 /rw/volumes:
   file.directory:
@@ -55,12 +61,6 @@ qubes-minio.socket:
 {% endif %}
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/rabbitmq-server') == "1" %}
-
-# bring over amqp (rabbitmq) creds
-/usr/local/etc/amqp.yml:
-  file.managed:
-    - source: salt://files/amqp.yml.j2
-    - template: jinja
 
 run rabbitmq service at boot:
   file.append:
@@ -108,11 +108,6 @@ mineos-repo:
     - target: /usr/local/games/minecraft
     - rev: HEAD
     - force_reset: True
-
-# symlink to persistent area for game data
-/usr/games/minecraft:
-  file.symlink:
-    - target: /usr/local/games/minecraft
 
 ## update ruby
 # update bundler

@@ -57,6 +57,11 @@ minio:
   file.symlink:
     - target: /rw/vargames/minecraft
 
+# symlink to repo from conventional location
+/usr/games/minecraft:
+  file.symlink:
+    - target: /usr/local/games/minecraft
+
 # destination for minio buckets
 /var/games/volumes:
   file.symlink:
