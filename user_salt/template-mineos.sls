@@ -5,7 +5,7 @@
 # Update hq and workers with most recent gems, git repos, etc.
 #
 # Execute:
-#   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
+#   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls template-mineos saltenv=user
 ##
 
 install main packages:
@@ -85,6 +85,26 @@ mc_miniobrowser:
 /etc/systemd/system/minio.service:
   file.managed:
     - source: salt://files/minio.service
+
+# append worker tcp binding for minio
+/etc/systemd/system/qubes-minio@.service:
+  file.managed:
+    - source: salt://files/qubes-minio.service
+
+# append worker tcp binding for minio
+/etc/systemd/system/qubes-minio.socket:
+  file.managed:
+    - source: salt://files/qubes-minio.socket
+
+# append worker tcp binding for rabbitmq
+/etc/systemd/system/qubes-amqp@.service:
+  file.managed:
+    - source: salt://files/qubes-amqp.service
+
+# append worker tcp binding for rabbitmq
+/etc/systemd/system/qubes-amqp.socket:
+  file.managed:
+    - source: salt://files/qubes-amqp.socket
 
 # download mineos-ruby repository
 mineos-repo:

@@ -40,8 +40,18 @@ minio:
   service.running
 
 {% else %}
+
 # stuff to run when it is an ordinary worker
-# that needs to conenct to minio
+# that needs to connect to minio
+run minio tcp connector at boot:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start qubes-minio.socket
+
+qubes-minio.socket:
+  service.running
+
 {% endif %}
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/rabbitmq-server') == "1" %}
@@ -77,8 +87,18 @@ rabbitmq-server:
     - runas: rabbitmq
 
 {% else %}
+
 # stuff to run when it is an ordinary worker
 # that needs to conenct to amqp
+run rabbitmq tcp connector at boot:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start qubes-amqp.socket
+
+qubes-amqp.socket:
+  service.running
+
 {% endif %}
 
 ## update ruby
