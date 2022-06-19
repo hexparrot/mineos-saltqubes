@@ -103,12 +103,3 @@ mineos-repo:
   file.managed:
     - source: salt://files/minio.service
 
-# reload new unit files for systemd
-systemctl_reload:
-  module.run:
-    - name: service.systemctl_reload
-
-# runthrough hq service test
-hq.service:
-  service.enabled
-

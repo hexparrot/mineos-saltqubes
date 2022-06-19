@@ -8,6 +8,62 @@
 #   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 ##
 
+# reload new unit files for systemd
+systemctl_reload:
+  module.run:
+    - name: service.systemctl_reload
+
+{% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
+
+# bring over object store creds
+/usr/local/etc/objstore.yml:
+  file.managed:
+    - source: salt://files/objstore.yml.j2
+    - template: jinja
+
+/rw/volumes:
+  file.directory:
+    - user: minio-user
+    - makedirs: True
+
+minio:
+  service.running:
+    - enable: True
+
+{% endif %}
+
+{% if salt['cmd.run']('qubesdb-read /qubes-service/rabbitmq-server') == "1" %}
+
+# bring over amqp (rabbitmq) creds
+/usr/local/etc/amqp.yml:
+  file.managed:
+    - source: salt://files/amqp.yml.j2
+    - template: jinja
+
+rabbitmq-server:
+  service.running:
+    - enable: True
+
+rabbitmq_management:
+  rabbitmq_plugin.enabled: []
+
+# create primary admin
+{{ salt['pillar.get']('amqp:user') }}:
+  rabbitmq_user.present:
+    - password: {{ salt['pillar.get']('amqp:password') }}
+    - force: True
+    - tags:
+      - administrator
+    - perms:
+      - '/':
+        - ".*"
+        - ".*"
+        - ".*"
+    - runas: rabbitmq
+
+{% endif %}
+
+## update ruby
 # update bundler
 update bundler:
   cmd.run:
@@ -20,6 +76,15 @@ gem update:
     - name: bundle update
     - cwd: /usr/games/minecraft
 
+# now for user
+{% for item in ('eventmachine','ox') %}
+gemadd_{{ item }}:
+  gem.installed:
+    - name: {{ item }}
+    - user: user
+{% endfor %}
+## end ruby
+
 # update mineos-ruby repository
 mineos-repo:
   git.latest:
@@ -27,30 +92,4 @@ mineos-repo:
     - target: /usr/games/minecraft
     - rev: HEAD
     - force_reset: True
-
-# bring over object store creds
-/usr/local/etc/objstore.yml:
-  file.managed:
-    - source: salt://files/objstore.yml.j2
-    - template: jinja
-
-# bring over amqp (rabbitmq) creds
-/usr/local/etc/amqp.yml:
-  file.managed:
-    - source: salt://files/amqp.yml.j2
-    - template: jinja
-
-# create primary admin
-wirt:
-  rabbitmq_user.present:
-    - password: overthegardenwall
-    - force: True
-    - tags:
-      - administrator
-    - perms:
-      - '/':
-        - ".*"
-        - ".*"
-        - ".*"
-    - runas: rabbitmq
 
