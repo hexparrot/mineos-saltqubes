@@ -8,6 +8,10 @@
 #   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 ##
 
+/rw/config/rc.local:
+  file.managed:
+    - mode: 0755
+
 {% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
 
 # bring over object store creds
@@ -26,9 +30,14 @@ systemctl_reload:
   module.run:
     - name: service.systemctl_reload
 
+run minio service at boot:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start minio
+
 minio:
-  service.running:
-    - enable: True
+  service.running
 
 {% else %}
 # stuff to run when it is an ordinary worker
@@ -43,12 +52,15 @@ minio:
     - source: salt://files/amqp.yml.j2
     - template: jinja
 
-rabbitmq-server:
-  service.running:
-    - enable: True
+run rabbitmq service at boot:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start rabbitmq-server
+      - rabbitmq-plugins enable rabbitmq_management
 
-rabbitmq_management:
-  rabbitmq_plugin.enabled: []
+rabbitmq-server:
+  service.running
 
 # create primary admin
 {{ salt['pillar.get']('amqp:user') }}:
