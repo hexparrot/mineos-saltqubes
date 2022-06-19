@@ -2,7 +2,7 @@
 Description=Minio TCP Socket
 
 [Socket]
-ListenStream=127.0.0.1:25672
+ListenStream=127.0.0.1:5672
 Accept=true
 
 [Install]

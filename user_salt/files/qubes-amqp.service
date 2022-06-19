@@ -2,7 +2,7 @@
 Description=Minio Server Port
 
 [Service]
-ExecStart=qrexec-client-vm '' qubes.ConnectTCP+25672
+ExecStart=qrexec-client-vm '' qubes.ConnectTCP+5672
 StandardInput=socket
 StandardOutput=inherit
 
