@@ -8,12 +8,12 @@
 #   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 ##
 
-# reload new unit files for systemd
-systemctl_reload:
-  module.run:
-    - name: service.systemctl_reload
-
 {% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
+
+# append system services for minio
+/etc/systemd/system/minio.service:
+  file.managed:
+    - source: salt://files/minio.service
 
 # bring over object store creds
 /usr/local/etc/objstore.yml:
@@ -26,10 +26,18 @@ systemctl_reload:
     - user: minio-user
     - makedirs: True
 
+# reload new unit files for systemd
+systemctl_reload:
+  module.run:
+    - name: service.systemctl_reload
+
 minio:
   service.running:
     - enable: True
 
+{% else %}
+# stuff to run when it is an ordinary worker
+# that needs to conenct to minio
 {% endif %}
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/rabbitmq-server') == "1" %}
@@ -61,6 +69,9 @@ rabbitmq_management:
         - ".*"
     - runas: rabbitmq
 
+{% else %}
+# stuff to run when it is an ordinary worker
+# that needs to conenct to amqp
 {% endif %}
 
 ## update ruby
@@ -84,12 +95,4 @@ gemadd_{{ item }}:
     - user: user
 {% endfor %}
 ## end ruby
-
-# update mineos-ruby repository
-mineos-repo:
-  git.latest:
-    - name: https://github.com/hexparrot/mineos-ruby
-    - target: /usr/games/minecraft
-    - rev: HEAD
-    - force_reset: True
 

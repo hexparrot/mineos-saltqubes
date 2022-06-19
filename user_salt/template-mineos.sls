@@ -2,11 +2,12 @@
 # vim: set syntax=yaml ts=2 sw=2 sts=2 et :
 
 ##
-# qvm.mos-template
-# ====================
+# Update hq and workers with most recent gems, git repos, etc.
+#
+# Execute:
+#   qubesctl --skip-dom0 --targets=mineos-hq,mineos-worker state.sls mineos-update saltenv=user
 ##
 
-# in Qubes VM repositories, we explicitely list needed packages
 install main packages:
   pkg.installed:
     - pkgs:
@@ -86,20 +87,5 @@ mineos-repo:
     - name: https://github.com/hexparrot/mineos-ruby
     - target: /usr/games/minecraft
     - rev: HEAD
-
-# add mineos-hq system services to rc.local
-/etc/rc.d/init.d/mineos-hq:
-  file.managed:
-    - source: salt://files/mineos-hq
-    - mode: 755
-
-# append system services for hq
-/etc/systemd/system/hq.service:
-  file.managed:
-    - source: salt://files/hq.service
-
-# append system services for minio
-/etc/systemd/system/minio.service:
-  file.managed:
-    - source: salt://files/minio.service
+    - force_reset: True
 
