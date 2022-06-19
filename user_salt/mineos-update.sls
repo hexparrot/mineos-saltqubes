@@ -72,15 +72,22 @@ run rabbitmq service at boot:
 rabbitmq-server:
   service.running
 
+/mineos:
+  rabbitmq_vhost.present
+
 # create primary admin
 {{ salt['pillar.get']('amqp:user') }}:
   rabbitmq_user.present:
-    - password: {{ salt['pillar.get']('amqp:password') }}
+    - password: {{ salt['pillar.get']('amqp:pass') }}
     - force: True
     - tags:
       - administrator
     - perms:
       - '/':
+        - ".*"
+        - ".*"
+        - ".*"
+      - '/mineos':
         - ".*"
         - ".*"
         - ".*"
