@@ -116,13 +116,21 @@ mc_miniobrowser:
     - source: salt://files/mineos-mrmanager.service
 ## End Service Unit Files
 
-## Update ruby
+## Start ruby stuff
 # ruby gems installed
 {% for item in ('inifile','get_process_mem','minitar','eventmachine','bunny','usagewatch','airborne','async_sinatra','thin','aws-sdk-s3','sinatra-websocket','bcrypt','httparty','rpam2','rubyzip','ox') %}
 {{item}}:
   gem.installed:
     - user: root
 {% endfor %}
+
+# download mineos-ruby repository
+mineos-repo:
+  git.latest:
+    - name: https://github.com/hexparrot/mineos-ruby
+    - target: /usr/local/games/minecraft
+    - rev: HEAD
+    - force_reset: True
 
 update bundler:
   cmd.run:
@@ -140,5 +148,5 @@ update bundle:
   cmd.run:
     - name: bundle update
     - cwd: /usr/local/games/minecraft
-## End Update ruby
+## End ruby stuff
 

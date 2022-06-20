@@ -127,8 +127,8 @@ start mrmanager daemon:
 
 {% endif %}
 
-# download mineos-ruby repository
-mineos-repo:
+# update mineos-ruby repository
+mineos-repo-update:
   git.latest:
     - name: https://github.com/hexparrot/mineos-ruby
     - target: /usr/local/games/minecraft
