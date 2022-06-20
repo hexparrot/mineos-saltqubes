@@ -80,39 +80,10 @@ mc_miniobrowser:
     - mode: 550
 
 ## Service Unit Files
-# append system services for minio
-/etc/systemd/system/minio.service:
-  file.managed:
-    - source: salt://files/minio.service
+/etc/systemd/system:
+  file.recurse:
+    - name: /etc/systemd/system
+    - source: salt://files/serviceunits
 
-# append worker tcp binding for minio
-/etc/systemd/system/qubes-minio@.service:
-  file.managed:
-    - source: salt://files/qubes-minio.service
-
-# append worker tcp binding for minio
-/etc/systemd/system/qubes-minio.socket:
-  file.managed:
-    - source: salt://files/qubes-minio.socket
-
-# append worker tcp binding for rabbitmq
-/etc/systemd/system/qubes-amqp@.service:
-  file.managed:
-    - source: salt://files/qubes-amqp.service
-
-# append worker tcp binding for rabbitmq
-/etc/systemd/system/qubes-amqp.socket:
-  file.managed:
-    - source: salt://files/qubes-amqp.socket
-
-# append unit file for mineos-hq service
-/etc/systemd/system/mineos-hq.service:
-  file.managed:
-    - source: salt://files/mineos-hq.service
-
-# append unit file for mineos-mrmanager service
-/etc/systemd/system/mineos-mrmanager.service:
-  file.managed:
-    - source: salt://files/mineos-mrmanager.service
 ## End Service Unit Files
 
