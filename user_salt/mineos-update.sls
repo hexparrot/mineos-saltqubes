@@ -127,13 +127,13 @@ start mrmanager daemon:
 
 {% endif %}
 
-# update mineos-ruby repository
-mineos-repo-update:
-  git.latest:
-    - name: https://github.com/hexparrot/mineos-ruby
-    - target: /usr/local/games/minecraft
-    - rev: HEAD
-    - force_reset: True
+## Start ruby stuff
+# ruby gems installed
+{% for item in ('inifile','get_process_mem','minitar','eventmachine','bunny','usagewatch','airborne','async_sinatra','thin','aws-sdk-s3','sinatra-websocket','bcrypt','httparty','rpam2','rubyzip','ox') %}
+{{item}}:
+  gem.installed:
+    - user: root
+{% endfor %}
 
 # now for user
 {% for item in ('eventmachine','ox') %}
@@ -142,5 +142,30 @@ gemadd_{{ item }}:
     - name: {{ item }}
     - user: user
 {% endfor %}
-## end ruby
+
+# download mineos-ruby repository
+mineos-repo:
+  git.latest:
+    - name: https://github.com/hexparrot/mineos-ruby
+    - target: /usr/local/games/minecraft
+    - rev: HEAD
+    - force_reset: True
+
+update bundler:
+  cmd.run:
+    - name: bundle update --bundler
+    - cwd: /usr/local/games/minecraft
+
+# install the rubies
+install the bundle:
+  cmd.run:
+    - name: bundle install
+    - cwd: /usr/local/games/minecraft
+
+# now update them, for some reason
+update bundle:
+  cmd.run:
+    - name: bundle update
+    - cwd: /usr/local/games/minecraft
+## End ruby stuff
 
