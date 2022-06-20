@@ -54,3 +54,9 @@ new worker {{ host }}:
       - {{ host }} @default allow,target={{ salt['pillar.get']('hosts:hq') }}
 {% endfor %}
 
+{% set VMS = [salt['pillar.get']('hosts:hq')] + salt['pillar.get']('hosts:satellites') %}
+
+run mineos-update on all vms:
+  cmd.run:
+    - name: qubesctl --skip-dom0 --targets={{ ','.join(VMS) }} state.sls mineos-update saltenv=user
+
