@@ -8,6 +8,8 @@ WorkingDirectory=/usr/local/games/minecraft
 ExecStart=/usr/bin/ruby hq.rb
 User=root
 Restart=always
+StandardOutput=append:/rw/mineos-hq.log
+StandardError=append:/rw/mineos-hq.log
 
 [Install]
 WantedBy=multi-user.target
