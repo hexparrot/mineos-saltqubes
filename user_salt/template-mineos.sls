@@ -25,13 +25,6 @@ install main packages:
       - net-tools
       - telnet
 
-# ruby gems installed
-{% for item in ('inifile','get_process_mem','minitar','eventmachine','bunny','usagewatch','airborne','async_sinatra','thin','aws-sdk-s3','sinatra-websocket','bcrypt','httparty','rpam2','rubyzip','ox') %}
-{{item}}:
-  gem.installed:
-    - user: root
-{% endfor %}
-
 # create minio-user account
 minio-user:
   user.present:
@@ -86,6 +79,7 @@ mc_miniobrowser:
     - owner: minio-user
     - mode: 550
 
+## Service Unit Files
 # append system services for minio
 /etc/systemd/system/minio.service:
   file.managed:
@@ -120,4 +114,31 @@ mc_miniobrowser:
 /etc/systemd/system/mineos-mrmanager.service:
   file.managed:
     - source: salt://files/mineos-mrmanager.service
+## End Service Unit Files
+
+## Update ruby
+# ruby gems installed
+{% for item in ('inifile','get_process_mem','minitar','eventmachine','bunny','usagewatch','airborne','async_sinatra','thin','aws-sdk-s3','sinatra-websocket','bcrypt','httparty','rpam2','rubyzip','ox') %}
+{{item}}:
+  gem.installed:
+    - user: root
+{% endfor %}
+
+update bundler:
+  cmd.run:
+    - name: bundle update --bundler
+    - cwd: /usr/local/games/minecraft
+
+# install the rubies
+install the bundle:
+  cmd.run:
+    - name: bundle install
+    - cwd: /usr/local/games/minecraft
+
+# now update them, for some reason
+update bundle:
+  cmd.run:
+    - name: bundle update
+    - cwd: /usr/local/games/minecraft
+## End Update ruby
 

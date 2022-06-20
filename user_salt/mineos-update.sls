@@ -123,7 +123,7 @@ start mrmanager daemon:
   file.append:
     - name: /rw/config/rc.local
     - text:
-      - systemctl start mineos-worker
+      - systemctl start mineos-mrmanager
 
 {% endif %}
 
@@ -134,18 +134,6 @@ mineos-repo:
     - target: /usr/local/games/minecraft
     - rev: HEAD
     - force_reset: True
-
-## update ruby
-update bundler:
-  cmd.run:
-    - name: bundle update --bundler
-    - cwd: /usr/local/games/minecraft
-
-# update the rubies
-gem install:
-  cmd.run:
-    - name: bundle install
-    - cwd: /usr/local/games/minecraft
 
 # now for user
 {% for item in ('eventmachine','ox') %}
