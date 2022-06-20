@@ -1,0 +1,14 @@
+[Unit]
+Description=MineOS MrManager Daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/games/minecraft
+ExecStart=/usr/bin/ruby mrmanager.rb
+User=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

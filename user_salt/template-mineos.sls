@@ -111,3 +111,13 @@ mc_miniobrowser:
   file.managed:
     - source: salt://files/qubes-amqp.socket
 
+# append unit file for mineos-hq service
+/etc/systemd/system/mineos-hq.service:
+  file.managed:
+    - source: salt://files/mineos-hq.service
+
+# append unit file for mineos-mrmanager service
+/etc/systemd/system/mineos-mrmanager.service:
+  file.managed:
+    - source: salt://files/mineos-mrmanager.service
+

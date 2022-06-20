@@ -108,6 +108,25 @@ qubes-amqp.socket:
 
 {% endif %}
 
+# currently designating the rabbitmq server to be the hq.
+{% if salt['cmd.run']('qubesdb-read /qubes-service/rabbitmq-server') == "1" %}
+
+start mineos-hq daemon:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start mineos-hq
+
+{% else %}
+
+start mrmanager daemon:
+  file.append:
+    - name: /rw/config/rc.local
+    - text:
+      - systemctl start mineos-worker
+
+{% endif %}
+
 # download mineos-ruby repository
 mineos-repo:
   git.latest:
@@ -117,16 +136,15 @@ mineos-repo:
     - force_reset: True
 
 ## update ruby
-# update bundler
 update bundler:
   cmd.run:
     - name: bundle update --bundler
     - cwd: /usr/local/games/minecraft
 
 # update the rubies
-gem update:
+gem install:
   cmd.run:
-    - name: bundle update
+    - name: bundle install
     - cwd: /usr/local/games/minecraft
 
 # now for user
