@@ -12,6 +12,7 @@ amqp:
 
 hosts:
   hq: mineos-hq
+  network: mos-firewall
   satellites:
     - mineos-worker
 

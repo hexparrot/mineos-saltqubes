@@ -21,7 +21,6 @@ create ruby template:
 create firewall vm:
   qvm.present:
     - name: {{ salt['pillar.get']('hosts:network') }}
-    - class: StandaloneVM
     - template: fedora-35
     - label: green
 
