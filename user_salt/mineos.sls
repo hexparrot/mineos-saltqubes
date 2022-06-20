@@ -28,27 +28,29 @@ clone vm to templatevm:
 
 create hq appvm:
   qvm.present:
-    - name: mineos-hq
+    - name: {{ salt['pillar.get']('hosts:hq') }}
     - template: mos-template
     - label: green
 
 turn on hq services:
   qvm.service:
-    - name: mineos-hq
+    - name: {{ salt['pillar.get']('hosts:hq') }}
     - enable:
       - rabbitmq-server
       - minio
 
-create worker vm:
+{% for host in salt['pillar.get']('hosts:satellites') %}
+new worker {{ host }}:
   qvm.present:
-    - name: mineos-worker
+    - name: {{ host }}
     - template: mos-template
     - label: green
 
 # qubes rpc bind workers to hq
-worker tcp to hq:
+{{ host }} tcp to hq:
   file.prepend:
     - name: /etc/qubes-rpc/policy/qubes.ConnectTCP
     - text:
-      - mineos-worker @default allow,target=mineos-hq
+      - {{ host }} @default allow,target={{ salt['pillar.get']('hosts:hq') }}
+{% endfor %}
 

@@ -11,15 +11,17 @@
 #   qubesctl state.sls mineos-remove saltenv=user
 ##
 
-mineos-worker:
+{{ salt['pillar.get']('hosts:hq') }}:
   qvm.absent
 
-mineos-hq:
+{% for host in salt['pillar.get']('hosts:satellites') %}
+{{ host }}:
+  qvm.absent
+{% endfor %}
+
+mos-template-tmp:
   qvm.absent
 
 mos-template:
-  qvm.absent
-
-mos-template-tmp:
   qvm.absent
 

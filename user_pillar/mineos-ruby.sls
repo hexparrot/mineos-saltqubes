@@ -10,3 +10,8 @@ amqp:
   user: wirt
   pass: overthegardenwall
 
+hosts:
+  hq: mineos-hq
+  satellites:
+    - mineos-worker
+
