@@ -22,6 +22,9 @@
 mos-template-tmp:
   qvm.absent
 
+{{ salt['pillar.get']('hosts:network') }}:
+  qvm.absent
+
 mos-template:
   qvm.absent
 

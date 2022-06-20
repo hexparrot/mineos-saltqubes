@@ -18,6 +18,25 @@ create ruby template:
     - template: fedora-35
     - label: green
 
+create firewall vm:
+  qvm.present:
+    - name: {{ salt['pillar.get']('hosts:network') }}
+    - class: StandaloneVM
+    - template: fedora-35
+    - label: green
+
+turn on firewall service:
+  qvm.service:
+    - name: {{ salt['pillar.get']('hosts:network') }}
+    - enable:
+      - qubes-firewall
+      - qubes-network
+
+let mos-firewall provide network:
+  qvm.prefs:
+    - name: {{ salt['pillar.get']('hosts:network') }}
+    - provides-network: True
+
 update standalone template:
   cmd.run:
     - name: qubesctl --skip-dom0 --targets=mos-template-tmp state.sls template-mineos saltenv=user
@@ -25,6 +44,9 @@ update standalone template:
 clone vm to templatevm:
   cmd.run:
     - name: qvm-clone -C TemplateVM mos-template-tmp mos-template
+
+mos-template-tmp:
+  qvm.absent
 
 create hq appvm:
   qvm.present:
@@ -55,6 +77,14 @@ new worker {{ host }}:
 {% endfor %}
 
 {% set VMS = [salt['pillar.get']('hosts:hq')] + salt['pillar.get']('hosts:satellites') %}
+
+{% for vm in VMS %}
+change {{vm}} netvm:
+  qvm.prefs:
+    - name: {{ vm }}
+    - netvm: {{ salt['pillar.get']('hosts:network') }}
+
+{% endfor %}
 
 run mineos-update on all vms:
   cmd.run:
