@@ -83,7 +83,7 @@ mc_miniobrowser:
 /etc/systemd/system:
   file.recurse:
     - name: /etc/systemd/system
-    - source: salt://files/serviceunits
+    - source: salt://serviceunits
 
 ## End Service Unit Files
 

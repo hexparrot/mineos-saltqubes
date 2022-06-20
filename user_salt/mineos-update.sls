@@ -15,14 +15,22 @@
 # bring over amqp (rabbitmq) creds (all nodes)
 /usr/local/etc/amqp.yml:
   file.managed:
-    - source: salt://files/amqp.yml.j2
-    - template: jinja
+    - contents:
+      - "amqp:"
+      - "  host: {{ salt['pillar.get']('amqp:host') }}"
+      - "  port: {{ salt['pillar.get']('amqp:port') }}"
+      - "  user: {{ salt['pillar.get']('amqp:user') }}"
+      - "  pass: {{ salt['pillar.get']('amqp:pass') }}"
+      - "  vhost: {{ salt['pillar.get']('amqp:vhost') }}"
 
 # bring over object store creds (all nodes)
 /usr/local/etc/objstore.yml:
   file.managed:
-    - source: salt://files/objstore.yml.j2
-    - template: jinja
+    - contents:
+      - "object_store:"
+      - "  host: {{ salt['pillar.get']('object-store:host') }}"
+      - "  access_key: {{ salt['pillar.get']('object-store:access_key') }}"
+      - "  secret_key: {{ salt['pillar.get']('object-store:secret_key') }}"
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
 
