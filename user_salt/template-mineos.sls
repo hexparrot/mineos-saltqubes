@@ -87,3 +87,18 @@ mc_miniobrowser:
 
 ## End Service Unit Files
 
+## bind-dirs config
+/usr/lib/qubes-bind-dirs.d:
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - file_mode: 644
+
+/usr/lib/qubes-bind-dirs.d/90_qubes_rabbitmq.conf:
+  file.managed:
+    - contents:
+      - "binds+=( '/var/lib/rabbitmq' )"
+      - "binds+=( '/var/log/rabbitmq' )"
+
+## End bind-dirs config
