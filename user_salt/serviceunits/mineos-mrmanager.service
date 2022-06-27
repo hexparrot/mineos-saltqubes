@@ -8,8 +8,8 @@ WorkingDirectory=/usr/local/games/minecraft
 ExecStart=/usr/bin/ruby mrmanager.rb
 User=root
 Restart=always
-StandardOutput=append:/rw/mineos-mrmanager.log
-StandardError=append:/rw/mineos-mrmanager.log
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
