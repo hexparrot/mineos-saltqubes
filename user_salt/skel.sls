@@ -9,7 +9,7 @@
 #   qubesctl --skip-dom0 --targets=mineos-worker state.sls skel saltenv=user
 ##
 
-{% set user = "user" %}
+{% set user = salt['pillar.get']('hosts:worker_username') %}
 
 /home/{{ user }}:
   file.directory:
@@ -17,7 +17,7 @@
     - group: {{ user }}
 
 {% if salt['file.directory_exists']("/home/"+user+"/minecraft") %}
-/home/user/minecraft:
+/home/{{ user }}/minecraft:
   file.directory:
     - user: {{ user }}
     - group: {{ user }}

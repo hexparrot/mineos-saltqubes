@@ -13,6 +13,7 @@ amqp:
 hosts:
   hq: mineos-hq
   network: mos-firewall
+  worker_username: user
   satellites:
     - mineos-worker
 
