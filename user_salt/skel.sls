@@ -9,16 +9,31 @@
 #   qubesctl --skip-dom0 --targets=mineos-worker state.sls skel saltenv=user
 ##
 
-{% set alldirs = salt['cmd.run']('ls -1a -A /home/user/minecraft/servers/').split('\n') %}
-{% for each_dir in alldirs %}
+{% set user = "user" %}
 
-copy file skeleton to server {{ each_dir }}:
+/home/{{ user }}:
+  file.directory:
+    - user: {{ user }}
+    - group: {{ user }}
+
+{% if salt['file.directory_exists']("/home/"+user+"/minecraft") %}
+/home/user/minecraft:
+  file.directory:
+    - user: {{ user }}
+    - group: {{ user }}
+{% endif %}
+
+{% set alldirs = salt['cmd.run']('ls -1 /home/'+user+'/minecraft/servers').splitlines() %}
+{% for each_dir in alldirs %}
+{% if salt['file.directory_exists']('/home/'+user+'/minecraft/servers/'+each_dir) %}
+
+/home/{{ user }}/minecraft/servers/{{ each_dir }}:
   file.recurse:
-    - user: user
-    - group: user
-    - name: /home/user/minecraft/servers/{{ each_dir }}/
+    - user: {{ user }}
+    - group: {{ user }}
     - source: salt://skel
     - include_empty: True
 
+{% endif %}
 {% endfor %}
 
