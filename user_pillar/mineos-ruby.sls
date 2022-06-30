@@ -1,5 +1,5 @@
 object-store:
-  host: http://localhost:9000
+  host: localhost:9000
   access_key: minecraft
   secret_key: Budk86v4F3JR8CE 
 

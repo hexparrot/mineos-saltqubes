@@ -60,12 +60,10 @@ minio:
   file.symlink:
     - target: /rw/volumes
 
-# default minio configuration
+# symlink minio configuration to usrlocal
 /etc/default/minio:
-  file.managed:
-    - contents:
-      - MINIO_VOLUMES="/rw/volumes"
-      - MINIO_OPTS="--address localhost:9000"
+  file.symlink:
+    - target: /usr/local/etc/minio
 
 # download and install minio cli browser
 mc_miniobrowser:

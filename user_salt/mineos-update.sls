@@ -28,11 +28,22 @@
   file.managed:
     - contents:
       - "object_store:"
-      - "  host: {{ salt['pillar.get']('object-store:host') }}"
+      - "  host: http://{{ salt['pillar.get']('object-store:host') }}"
       - "  access_key: {{ salt['pillar.get']('object-store:access_key') }}"
       - "  secret_key: {{ salt['pillar.get']('object-store:secret_key') }}"
 
 {% if salt['cmd.run']('qubesdb-read /qubes-service/minio') == "1" %}
+
+# minio defaults
+/usr/local/etc/minio:
+  file.managed:
+    - contents:
+      - MINIO_VOLUMES="/rw/volumes"
+      - MINIO_OPTS="--address {{ salt['pillar.get']('object-store:host') }}"
+      - MINIO_ROOT_USER="{{ salt['pillar.get']('object-store:access_key') }}"
+      - MINIO_ROOT_PASSWORD="{{ salt['pillar.get']('object-store:secret_key') }}"
+    - owner: minio-user
+    - mode: 400
 
 /rw/volumes:
   file.directory:
