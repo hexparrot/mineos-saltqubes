@@ -12,14 +12,14 @@ setup mc client:
   cmd.run:
     - name: "mc alias set mineos http://{{ salt['pillar.get']('object-store:host') }} {{ salt['pillar.get']('object-store:access_key') }} {{ salt['pillar.get']('object-store:secret_key') }} --api S3v4"
 
+setup profile bucket:
+  cmd.run:
+    - name: "mc mb --ignore-existing mineos/profiles"
+
 {% for profile, values in salt['pillar.get']('profiles').items() %}
 
 {% if profile == "mojang" %}
 # logic for mojang profiles
-
-setup mojang bucket:
-  cmd.run:
-    - name: "mc mb --ignore-existing mineos/mojang"
 
 {% for version in values %}
 
@@ -27,12 +27,12 @@ download {{ profile }} server v{{ version }}:
   cmd.run:
     - name: "wget -nc -q -O /home/user/Downloads/minecraft_server.{{ version }}.jar https://s3.amazonaws.com/Minecraft.Download/versions/{{ version }}/minecraft_server.{{ version }}.jar"
     - creates: "/home/user/Downloads/minecraft_server.{{ version }}.jar"
-    - unless: salt['file.exists']("/rw/volumes/{{ profile }}/minecraft_server.{{ version }}.jar")
+    - unless: salt['file.exists']("/rw/volumes/profiles/{{ profile }}/{{ version }}/minecraft_server.{{ version }}.jar")
 
 upload {{ profile }} server v{{ version }} to obj store:
   cmd.run:
-    - name: "mc cp /home/user/Downloads/minecraft_server.{{ version }}.jar mineos/{{ profile }}/minecraft_server.{{ version }}.jar"
-    - creates: "/rw/volumes/{{ profile }}/minecraft_server.{{ version }}.jar"
+    - name: "mc cp /home/user/Downloads/minecraft_server.{{ version }}.jar mineos/profiles/{{ profile }}/{{ version }}/minecraft_server.{{ version }}.jar"
+    - creates: "/rw/volumes/profiles/{{ profile }}/{{ version }}/minecraft_server.{{ version }}.jar"
 
 {% endfor %}
 
@@ -42,22 +42,20 @@ upload {{ profile }} server v{{ version }} to obj store:
 
 # default handling of profiles in pillar
 
-setup manual bucket:
-  cmd.run:
-    - name: "mc mb --ignore-existing mineos/{{ profile }}"
-
+{% set shortprofile = profile.split("/")|first %}
+{% set version = profile.split("/")|last %}
 {% for fn, uri in values.items() %}
 
-download {{ profile }} server {{ fn }}:
+download {{ profile }} serverfile {{ fn }}:
   cmd.run:
     - name: "wget -nc -q -O /home/user/Downloads/{{ fn }} {{ uri }}"
     - creates: "/home/user/Downloads/{{ fn }}"
-    - unless: salt['file.exists']("/rw/volumes/{{ profile }}/{{ fn }}")
+    - unless: salt['file.exists']("/rw/volumes/profiles/{{ shortprofile }}/{{ version }}/{{ fn }}")
 
 upload {{ profile }} serverfile {{ fn }} to obj store:
   cmd.run:
-    - name: "mc cp /home/user/Downloads/{{ fn }} mineos/{{ profile }}/{{ fn }}"
-    - creates: "/rw/volumes/{{ profile }}/{{ fn }}"
+    - name: "mc cp /home/user/Downloads/{{ fn }} mineos/profiles/{{ shortprofile }}/{{ version }}/{{ fn }}"
+    - creates: "/rw/volumes/profiles/{{ shortprofile }}/{{ version }}/{{ fn }}"
 
 {% endfor %}
 

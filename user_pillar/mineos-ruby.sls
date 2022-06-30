@@ -21,7 +21,7 @@ profiles:
   mojang:
     - 1.6.4
     - 1.8.9
-  manualmojang:
+  manualmojang/1.0:
     minecraft_server.1.6.4.jar: https://s3.amazonaws.com/Minecraft.Download/versions/1.6.4/minecraft_server.1.6.4.jar
     minecraft_server.1.8.8.jar: https://s3.amazonaws.com/Minecraft.Download/versions/1.8.8/minecraft_server.1.8.8.jar
 
