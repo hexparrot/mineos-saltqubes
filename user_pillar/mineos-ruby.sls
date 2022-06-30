@@ -17,3 +17,8 @@ hosts:
   satellites:
     - mineos-worker
 
+profiles:
+  mojang:
+    - 1.6.4
+    - 1.8.9
+
