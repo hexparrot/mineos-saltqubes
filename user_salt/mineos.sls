@@ -89,3 +89,7 @@ run mineos-update on all vms:
   cmd.run:
     - name: qubesctl --skip-dom0 --targets={{ ','.join(VMS) }} state.sls mineos-update saltenv=user
 
+download profiles on hq:
+  cmd.run:
+    - name: qubesctl --skip-dom0 --targets={{ salt['pillar.get']('hosts:hq') }} state.sls profiles saltenv=user
+
