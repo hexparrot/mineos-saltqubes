@@ -25,14 +25,14 @@ setup mojang bucket:
 
 download {{ profile }} server v{{ version }}:
   cmd.run:
-    - name: "wget -nc -q -O /home/user/Downloads/{{ version }}.jar https://s3.amazonaws.com/Minecraft.Download/versions/{{ version }}/minecraft_server.{{ version }}.jar"
-    - creates: "/home/user/Downloads/{{ version }}.jar"
-    - unless: salt['file.exists']("/rw/volumes/{{ profile }}/{{ version }}.jar")
+    - name: "wget -nc -q -O /home/user/Downloads/minecraft_server.{{ version }}.jar https://s3.amazonaws.com/Minecraft.Download/versions/{{ version }}/minecraft_server.{{ version }}.jar"
+    - creates: "/home/user/Downloads/minecraft_server.{{ version }}.jar"
+    - unless: salt['file.exists']("/rw/volumes/{{ profile }}/minecraft_server.{{ version }}.jar")
 
 upload {{ profile }} server v{{ version }} to obj store:
   cmd.run:
-    - name: "mc cp /home/user/Downloads/{{ version }}.jar mineos/{{ profile }}/{{ version }}.jar"
-    - creates: "/rw/volumes/{{ profile }}/{{ version }}.jar"
+    - name: "mc cp /home/user/Downloads/minecraft_server.{{ version }}.jar mineos/{{ profile }}/minecraft_server.{{ version }}.jar"
+    - creates: "/rw/volumes/{{ profile }}/minecraft_server.{{ version }}.jar"
 
 {% endfor %}
 
