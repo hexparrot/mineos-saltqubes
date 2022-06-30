@@ -37,6 +37,31 @@ upload {{ profile }} server v{{ version }} to obj store:
 {% endfor %}
 
 # end mojang
+
+{% else %}
+
+# default handling of profiles in pillar
+
+setup manual bucket:
+  cmd.run:
+    - name: "mc mb --ignore-existing mineos/{{ profile }}"
+
+{% for fn, uri in values.items() %}
+
+download {{ profile }} server {{ fn }}:
+  cmd.run:
+    - name: "wget -nc -q -O /home/user/Downloads/{{ fn }} {{ uri }}"
+    - creates: "/home/user/Downloads/{{ fn }}"
+    - unless: salt['file.exists']("/rw/volumes/{{ profile }}/{{ fn }}")
+
+upload {{ profile }} serverfile {{ fn }} to obj store:
+  cmd.run:
+    - name: "mc cp /home/user/Downloads/{{ fn }} mineos/{{ profile }}/{{ fn }}"
+    - creates: "/rw/volumes/{{ profile }}/{{ fn }}"
+
+{% endfor %}
+
+# end default handling
 {% endif %}
 
 {% endfor %}
