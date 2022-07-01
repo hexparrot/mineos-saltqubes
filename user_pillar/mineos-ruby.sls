@@ -1,5 +1,6 @@
 object-store:
   host: localhost:9000
+  console: :9001
   access_key: minecraft
   secret_key: Budk86v4F3JR8CE 
 
