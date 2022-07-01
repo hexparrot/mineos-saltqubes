@@ -16,9 +16,9 @@ traffic passing through firewall:
   file.append:
     - name: /rw/config/qubes-firewall-user-script
     - text:
-      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 4567 -j ACCEPT
-      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 9001 -j ACCEPT
-      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 15672 -j ACCEPT
+      - iptables -I FORWARD 1 -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 4567 -j ACCEPT
+      - iptables -I FORWARD 1 -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 9001 -j ACCEPT
+      - iptables -I FORWARD 1 -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 15672 -j ACCEPT
 
 {% endif %}
 
@@ -28,11 +28,11 @@ traffic passing through firewall:
 
 webui traffic into hq:
   file.append:
-    - name: /rw/config/qubes-firewall-user-script
+    - name: /rw/config/rc.local
     - text:
-      - iptables -A INPUT -p tcp -m tcp --dport 4567 -j ACCEPT
-      - iptables -A INPUT -p tcp -m tcp --dport 9001 -j ACCEPT
-      - iptables -A INPUT -p tcp -m tcp --dport 15672 -j ACCEPT
+      - iptables -I INPUT 1 -p tcp -m tcp --dport 4567 -j ACCEPT
+      - iptables -I INPUT 1 -p tcp -m tcp --dport 9001 -j ACCEPT
+      - iptables -I INPUT 1 -p tcp -m tcp --dport 15672 -j ACCEPT
 
 {% endif %}
 

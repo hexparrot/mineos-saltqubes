@@ -107,3 +107,15 @@ set iptables on vms:
   cmd.run:
     - name: qubesctl --skip-dom0 --targets={{ salt['pillar.get']('hosts:hq') }},{{ salt['pillar.get']('hosts:network') }} state.sls iptables saltenv=user
 
+# Loop through all and shutdown
+{% for vm in VMS %}
+shutdown {{vm}}:
+  qvm.shutdown:
+    - name: {{ vm }}
+
+{% endfor %}
+
+shutdown {{ salt['pillar.get']('hosts:network') }}:
+  qvm.shutdown:
+    - name: {{ salt['pillar.get']('hosts:network') }}
+
