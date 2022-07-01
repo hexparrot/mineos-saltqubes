@@ -10,7 +10,7 @@
 
 setup mc client:
   cmd.run:
-    - name: "mc alias set mineos http://{{ salt['pillar.get']('object-store:host') }} {{ salt['pillar.get']('object-store:access_key') }} {{ salt['pillar.get']('object-store:secret_key') }} --api S3v4"
+    - name: "mc alias set mineos http://{{ salt['pillar.get']('object-store:host') }}:{{ salt['pillar.get']('object-store:port') }} {{ salt['pillar.get']('object-store:access_key') }} {{ salt['pillar.get']('object-store:secret_key') }} --api S3v4"
 
 setup profile bucket:
   cmd.run:

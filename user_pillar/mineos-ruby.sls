@@ -1,6 +1,7 @@
 object-store:
-  host: localhost:9000
-  console: :9001
+  host: localhost
+  port: 9000
+  console: 9001
   access_key: minecraft
   secret_key: Budk86v4F3JR8CE 
 
@@ -10,6 +11,9 @@ amqp:
   vhost: mineos
   user: wirt
   pass: overthegardenwall
+
+webui:
+  port: 4567
 
 hosts:
   hq: mineos-hq

@@ -47,6 +47,7 @@ clone vm to templatevm:
 mos-template-tmp:
   qvm.absent
 
+# create HQ appvm
 create hq appvm:
   qvm.present:
     - name: {{ salt['pillar.get']('hosts:hq') }}
@@ -61,14 +62,23 @@ turn on hq services:
       - minio
 
 # create frontend access appvm
-browser appvm {{ salt['pillar.get']('hosts:browser') }}:
+{% set browser = salt['pillar.get']('hosts:browser') %}
+
+browser appvm {{ browser }}:
   qvm.present:
-    - name: {{ salt['pillar.get']('hosts:browser') }}
+    - name: {{ browser }}
     - template: mos-template
     - label: green
 
-# Loop through all satellites
-{% for host in salt['pillar.get']('hosts:satellites') %}
+change {{ browser }} netvm:
+  qvm.prefs:
+    - name: {{ browser }}
+    - netvm: {{ salt['pillar.get']('hosts:network') }}
+
+{% set VMS = salt['pillar.get']('hosts:satellites') %}
+
+# create satellite appvms
+{% for host in VMS %}
 new worker {{ host }}:
   qvm.present:
     - name: {{ host }}
@@ -82,9 +92,9 @@ new worker {{ host }}:
     - text:
       - {{ host }} @default allow,target={{ salt['pillar.get']('hosts:hq') }}
 {% endfor %}
-# end satellites
+# end satellite loop
 
-{% set VMS = [salt['pillar.get']('hosts:hq')] + [salt['pillar.get']('hosts:browser')] + salt['pillar.get']('hosts:satellites') %}
+{% set VMS = [salt['pillar.get']('hosts:hq')] + salt['pillar.get']('hosts:satellites') %}
 
 # Loop through all
 {% for vm in VMS %}

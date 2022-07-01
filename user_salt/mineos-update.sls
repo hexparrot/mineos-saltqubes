@@ -28,7 +28,7 @@
   file.managed:
     - contents:
       - "object_store:"
-      - "  host: http://{{ salt['pillar.get']('object-store:host') }}"
+      - "  host: http://{{ salt['pillar.get']('object-store:host') }}:{{ salt['pillar.get']('object-store:port') }}"
       - "  access_key: {{ salt['pillar.get']('object-store:access_key') }}"
       - "  secret_key: {{ salt['pillar.get']('object-store:secret_key') }}"
 
@@ -39,7 +39,7 @@
   file.managed:
     - contents:
       - MINIO_VOLUMES="/rw/volumes"
-      - MINIO_OPTS="--address {{ salt['pillar.get']('object-store:host') }} --console-address {{ salt['pillar.get']('object-store:console') }}"
+      - MINIO_OPTS="--address {{ salt['pillar.get']('object-store:host') }}:{{ salt['pillar.get']('object-store:port') }} --console-address :{{ salt['pillar.get']('object-store:console') }}"
       - MINIO_ROOT_USER="{{ salt['pillar.get']('object-store:access_key') }}"
       - MINIO_ROOT_PASSWORD="{{ salt['pillar.get']('object-store:secret_key') }}"
     - owner: minio-user
