@@ -14,6 +14,7 @@ amqp:
 hosts:
   hq: mineos-hq
   network: mos-firewall
+  browser: mineos-webui
   worker_username: user
   satellites:
     - mineos-worker
