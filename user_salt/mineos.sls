@@ -60,6 +60,13 @@ turn on hq services:
       - rabbitmq-server
       - minio
 
+# create frontend access appvm
+browser appvm {{ salt['pillar.get']('hosts:browser') }}:
+  qvm.present:
+    - name: {{ salt['pillar.get']('hosts:browser') }}
+    - template: mos-template
+    - label: green
+
 # Loop through all satellites
 {% for host in salt['pillar.get']('hosts:satellites') %}
 new worker {{ host }}:
@@ -77,7 +84,7 @@ new worker {{ host }}:
 {% endfor %}
 # end satellites
 
-{% set VMS = [salt['pillar.get']('hosts:hq')] + salt['pillar.get']('hosts:satellites') %}
+{% set VMS = [salt['pillar.get']('hosts:hq')] + [salt['pillar.get']('hosts:browser')] + salt['pillar.get']('hosts:satellites') %}
 
 # Loop through all
 {% for vm in VMS %}
@@ -99,12 +106,4 @@ download profiles on hq:
 set iptables on vms:
   cmd.run:
     - name: qubesctl --skip-dom0 --targets={{ salt['pillar.get']('hosts:hq') }},{{ salt['pillar.get']('hosts:network') }} state.sls iptables saltenv=user
-
-# create frontend access appvm
-browser appvm {{ salt['pillar.get']('hosts:browser') }}
-  qvm.present:
-    - name: {{ salt['pillar.get']('hosts:browser') }}
-    - netvm: {{ salt['pillar.get']('hosts:network') }}
-    - template: mos-template
-    - label: green
 

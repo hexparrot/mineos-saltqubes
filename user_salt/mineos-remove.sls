@@ -22,10 +22,10 @@
 mos-template-tmp:
   qvm.absent
 
-{{ salt['pillar.get']('hosts:network') }}:
+{{ salt['pillar.get']('hosts:browser') }}:
   qvm.absent
 
-{{ salt['pillar.get']('hosts:browser') }}:
+{{ salt['pillar.get']('hosts:network') }}:
   qvm.absent
 
 mos-template:

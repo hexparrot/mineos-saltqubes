@@ -12,38 +12,13 @@
 
 # INGRESS mos-firewall
 
-webui traffic through {{ salt['pillar.get']('hosts:network') }} to hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: FORWARD
-    - protocol: tcp
-    - dport: 4567
-    - destination: {{ salt['pillar.get']('ips:mineos-hq') }}
-    - jump: ACCEPT
-    - save: True
-
-amqp webui traffic through {{ salt['pillar.get']('hosts:network') }} to hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: FORWARD
-    - protocol: tcp
-    - dport: 15672
-    - destination: {{ salt['pillar.get']('ips:mineos-hq') }}
-    - jump: ACCEPT
-    - save: True
-
-minio webui traffic through {{ salt['pillar.get']('hosts:network') }} to hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: FORWARD
-    - protocol: tcp
-    - dport: 9001
-    - destination: {{ salt['pillar.get']('ips:mineos-hq') }}
-    - jump: ACCEPT
-    - save: True
+traffic passing through firewall:
+  file.append:
+    - name: /rw/config/qubes-firewall-user-script
+    - text:
+      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 4567 -j ACCEPT
+      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 9001 -j ACCEPT
+      - iptables -A FORWARD -d {{ salt['pillar.get']('ips:mineos-hq') }}/32 -p tcp -m tcp --dport 15672 -j ACCEPT
 
 {% endif %}
 
@@ -52,31 +27,12 @@ minio webui traffic through {{ salt['pillar.get']('hosts:network') }} to hq:
 # INGRESS mineos-hq
 
 webui traffic into hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: INPUT
-    - dport: 4567
-    - protocol: tcp
-    - jump: ACCEPT
-
-amqp webui traffic into hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: INPUT
-    - dport: 15672
-    - protocol: tcp
-    - jump: ACCEPT
-
-minio webui into hq:
-  iptables.insert:
-    - table: filter
-    - position: 1
-    - chain: INPUT
-    - dport: 9001
-    - protocol: tcp
-    - jump: ACCEPT
+  file.append:
+    - name: /rw/config/qubes-firewall-user-script
+    - text:
+      - iptables -A INPUT -p tcp -m tcp --dport 4567 -j ACCEPT
+      - iptables -A INPUT -p tcp -m tcp --dport 9001 -j ACCEPT
+      - iptables -A INPUT -p tcp -m tcp --dport 15672 -j ACCEPT
 
 {% endif %}
 
