@@ -17,6 +17,11 @@ hosts:
   satellites:
     - mineos-worker
 
+ips:
+  mineos-hq: 10.137.0.1
+  mineos-worker: 10.137.0.9
+  mos-firewall: 10.137.0.6
+
 profiles:
   mojang:
     - 1.6.4

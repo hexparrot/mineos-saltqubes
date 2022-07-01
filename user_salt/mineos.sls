@@ -93,3 +93,7 @@ download profiles on hq:
   cmd.run:
     - name: qubesctl --skip-dom0 --targets={{ salt['pillar.get']('hosts:hq') }} state.sls profiles saltenv=user
 
+set iptables on vms:
+  cmd.run:
+    - name: qubesctl --skip-dom0 --targets={{ salt['pillar.get']('hosts:hq') }},{{ salt['pillar.get']('hosts:network') }} state.sls iptables saltenv=user
+

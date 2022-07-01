@@ -4,6 +4,8 @@
 user:
   dom0:
     - mineos-ruby
+  mos-firewall:
+    - mineos-ruby
   mineos-hq:
     - mineos-ruby
   mineos-worker:
