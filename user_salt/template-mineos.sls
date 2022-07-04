@@ -82,6 +82,7 @@ mc_miniobrowser:
   file.recurse:
     - name: /etc/systemd/system
     - source: salt://serviceunits
+    - template: jinja
 
 ## End Service Unit Files
 

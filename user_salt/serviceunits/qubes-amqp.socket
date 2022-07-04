@@ -1,8 +1,8 @@
 [Unit]
-Description=Minio TCP Socket
+Description=RabbitMQ TCP Socket
 
 [Socket]
-ListenStream=127.0.0.1:5672
+ListenStream=127.0.0.1:{{ salt['pillar.get']('amqp:port') }}
 Accept=true
 
 [Install]

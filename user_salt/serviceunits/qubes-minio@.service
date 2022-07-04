@@ -2,7 +2,7 @@
 Description=Minio Server Port
 
 [Service]
-ExecStart=qrexec-client-vm '' qubes.ConnectTCP+9000
+ExecStart=qrexec-client-vm '' qubes.ConnectTCP+{{ salt['pillar.get']('object-store:port') }}
 StandardInput=socket
 StandardOutput=inherit
 

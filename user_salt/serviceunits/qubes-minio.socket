@@ -2,7 +2,7 @@
 Description=Minio TCP Socket
 
 [Socket]
-ListenStream=127.0.0.1:9000
+ListenStream=127.0.0.1:{{ salt['pillar.get']('object-store:port') }}
 Accept=true
 
 [Install]

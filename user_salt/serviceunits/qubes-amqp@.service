@@ -1,8 +1,8 @@
 [Unit]
-Description=Minio Server Port
+Description=RabbitMQ Server Port
 
 [Service]
-ExecStart=qrexec-client-vm '' qubes.ConnectTCP+5672
+ExecStart=qrexec-client-vm '' qubes.ConnectTCP+{{ salt['pillar.get']('amqp:port') }}
 StandardInput=socket
 StandardOutput=inherit
 
