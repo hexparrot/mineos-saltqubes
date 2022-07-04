@@ -188,3 +188,14 @@ update bundle:
     - cwd: /usr/local/games/minecraft
 ## End ruby stuff
 
+## hosts files
+
+{% for host, ip in salt['pillar.get']('ips').items() %}
+
+addhost {{ host }} to /etc/hosts:
+  host.present:
+    - name: {{ host }}
+    - ip: {{ ip }}
+
+{% endfor %}
+
